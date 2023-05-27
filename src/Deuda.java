@@ -149,9 +149,9 @@ public class Deuda extends JFrame {
 			totalDeuda=totalDeuda + d.getMonto();
 			
 			if(d.getMonto()<0) {
-				importe = "Restó de su deuda $"+String.valueOf(d.getMonto());
+				importe = "Resta de su deuda $"+String.valueOf(d.getMonto());
 			}else {
-				importe = "Agregó a su deuda $"+String.valueOf(d.getMonto());
+				importe = "Agrega a su deuda $"+String.valueOf(d.getMonto());
 			}
 			
 			if(deudas.get(i).getMonto() == 0) {
@@ -215,10 +215,10 @@ public class Deuda extends JFrame {
             }
         });
 
-        // Mostrar el diálogo de impresión
+        // Mostrar el diï¿½logo de impresiï¿½n
         if (printerJob.printDialog()) {
             try {
-                // Iniciar la impresión
+                // Iniciar la impresiï¿½n
                 printerJob.print();
             } catch (Exception ex) {
                 ex.printStackTrace();
