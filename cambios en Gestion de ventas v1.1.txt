@@ -1,0 +1,13 @@
+-agregar Saldo inicial de Caja-
+-activar seguridad-
+-corregir fecha Resumen del día 05/05/22-
+-corregir error con fecha en. (mm/dd/aa)-
+-agregar "$" a la tabla de ventas.-
+-no te permite buscar otra fecha que no sea la del dia en ventas.-
+-centrar pantalla al iniciar.-
+-se quitó el aviso de confirmacion de que el cliente se ingresó.-
+-se agrega el saldo inicial en la seccion de ventas.
+-posibilidad de agregar el movimiento desde detalle y selector de medio de pago.
+
+
+

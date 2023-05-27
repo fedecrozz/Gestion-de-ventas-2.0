@@ -1,0 +1,3 @@
+-se corrige saldo de caja, en lugar de restar, ahora suma.
+
+

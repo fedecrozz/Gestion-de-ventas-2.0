@@ -1,0 +1,16 @@
+Titi:
+Correciones:
+-Se corrige el formato de las fechas haciendo posible buscar ventas entre periodos sin errores.
+
+Actualizaciones:
+-Ventana generales: Saldo final al cierre de caja (Saldo inicial + Total de ventas en Efectivo - Salidas en efectivo) LISTO
+-Saldos iniciales: Transformarle la fecha por excel. 
+-Movimientos: Transformarle la fecha por excel. 
+-Backup: Instalarle OneDrive y respaldar la carpeta incluyendo la base de datos.
+-Cuentas corrientes: Crear una ventana de detalle para conocer los movimientos de los saldos. LISTO
+-Cuentas corrientes: Buscador de clientes. LISTO
+
+Total: $15.000
+Fecha: 4/6
+
+--------------------------------
