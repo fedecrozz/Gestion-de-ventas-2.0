@@ -96,20 +96,7 @@ public class Deuda extends JFrame {
 		JButton btnNewButton = new JButton("Imprimir");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				PrinterJob printerJob = PrinterJob.getPrinterJob();
-				
-				printerJob.setPrintable(table.getPrintable(
-		                JTable.PrintMode.NORMAL, null, null));
-				
-				
-				 if (printerJob.printDialog()) {
-			            try {
-			                // Iniciar la impresión
-			                printerJob.print();
-			            } catch (Exception ex) {
-			                ex.printStackTrace();
-			            }
-			        }
+				imprimirTabla();
 			}
 		});
 		btnNewButton.setBounds(91, 6, 89, 23);
@@ -160,4 +147,21 @@ public class Deuda extends JFrame {
 	public void cerrar() {
 		this.dispose();
 	}
+
+	public void imprimirTabla() {
+		PrinterJob printerJob = PrinterJob.getPrinterJob();
+		
+		printerJob.setPrintable(table.getPrintable(
+                JTable.PrintMode.NORMAL, null, null));
+		
+		
+		 if (printerJob.printDialog()) {
+	            try {
+	                printerJob.print();
+	            } catch (Exception ex) {
+	                ex.printStackTrace();
+	            }
+	        }
+	}
+
 }
