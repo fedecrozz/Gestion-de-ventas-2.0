@@ -7,7 +7,12 @@ import javax.swing.border.EmptyBorder;
 import java.awt.Color;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.ActionListener;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.util.ArrayList;
 
@@ -129,15 +134,30 @@ public class Deuda extends JFrame {
 	public void iniciarDeudas() {
 		modelo = new DefaultTableModel();
 		
+		modelo.addColumn("Cliente");
 		modelo.addColumn("Fecha");
 		modelo.addColumn("Monto");
 		modelo.addColumn("Total");
 		
+		
+		
 		double totalDeuda = 0;
+		String importe = "";
 		for(int i = 0 ; i< deudas.size();i++) {
+			
 			DeudaDet d = deudas.get(i);
 			totalDeuda=totalDeuda + d.getMonto();
-			modelo.addRow(new Object[] {d.getFecha(), "$"+String.valueOf(d.getMonto()),"$"+String.valueOf(totalDeuda)});
+			
+			if(d.getMonto()<0) {
+				importe = "Restó de su deuda $"+String.valueOf(d.getMonto());
+			}else {
+				importe = "Agregó a su deuda $"+String.valueOf(d.getMonto());
+			}
+			
+			if(deudas.get(i).getMonto() == 0) {
+				importe = "Sin deuda";
+			}
+			modelo.addRow(new Object[] {d.getCliente(),d.getFecha(), importe,"$"+String.valueOf(totalDeuda)});
 			
 		}
 		
@@ -164,4 +184,45 @@ public class Deuda extends JFrame {
 	        }
 	}
 
+	public boolean isSecondCharacterDash(String input) {
+        if (input.length() >= 2 && input.charAt(1) == '-') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+	
+	
+	public void imprimirPanel() {
+		// Obtener el PrinterJob predeterminado
+        PrinterJob printerJob = PrinterJob.getPrinterJob();
+
+        // Asignar el Printable al PrinterJob
+        printerJob.setPrintable(new Printable() {
+            @Override
+            public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
+                if (pageIndex > 0) {
+                    return NO_SUCH_PAGE;
+                }
+
+                Graphics2D g2d = (Graphics2D) graphics;
+                g2d.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
+
+                // Imprimir el contenido del JPanel
+                contentPane.printAll(graphics);
+
+                return PAGE_EXISTS;
+            }
+        });
+
+        // Mostrar el diálogo de impresión
+        if (printerJob.printDialog()) {
+            try {
+                // Iniciar la impresión
+                printerJob.print();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+	}
 }

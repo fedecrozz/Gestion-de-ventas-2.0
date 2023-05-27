@@ -977,7 +977,11 @@ public class Principal extends JFrame {
 				
 				String input = JOptionPane.showInputDialog("Ingrese la deuda de este cliente");
 				
-				if(Double.valueOf(input) <=0) {
+				if(input.isEmpty()) {
+					input = "0";
+				}
+				
+				if(Double.valueOf(input) <0) {
 					JOptionPane.showMessageDialog(null, "Ingrese un monto valido");
 				}else {
 					
