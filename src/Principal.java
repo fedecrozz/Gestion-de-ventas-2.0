@@ -101,6 +101,7 @@ public class Principal extends JFrame {
 	private JLabel saldoFinalEfectivo;
 	private JButton btnRestarDeuda;
 	private JButton btnDetalleDeuda;
+	private JComboBox cliente_movimiento;
 	
 
 	/**
@@ -216,7 +217,7 @@ public class Principal extends JFrame {
 		});
 		
 		salida = new JTextField();
-		salida.setBounds(412, 34, 124, 20);
+		salida.setBounds(412, 35, 124, 20);
 		panel_4.add(salida);
 		salida.setColumns(10);
 		
@@ -230,12 +231,12 @@ public class Principal extends JFrame {
 		});
 		
 		JLabel lblMonto = new JLabel("Salida");
-		lblMonto.setBounds(412, 11, 124, 25);
+		lblMonto.setBounds(412, 12, 124, 25);
 		panel_4.add(lblMonto);
 		lblMonto.setFont(new Font("Tahoma", Font.BOLD, 13));
 		
 		JLabel lblMedioDePago = new JLabel("Medio de pago");
-		lblMedioDePago.setBounds(546, 12, 124, 25);
+		lblMedioDePago.setBounds(753, 11, 124, 25);
 		panel_4.add(lblMedioDePago);
 		lblMedioDePago.setFont(new Font("Tahoma", Font.BOLD, 13));
 		
@@ -249,7 +250,7 @@ public class Principal extends JFrame {
 				}
 			}
 		});
-		medio_de_pago.setBounds(546, 35, 124, 20);
+		medio_de_pago.setBounds(753, 34, 124, 20);
 		panel_4.add(medio_de_pago);
 		medio_de_pago.setModel(new DefaultComboBoxModel(new String[] {"EFECTIVO", "TARJETA", "QR"}));
 		
@@ -260,7 +261,7 @@ public class Principal extends JFrame {
 				ingresarMovimiento();
 			}
 		});
-		btnNewButton.setBounds(680, 34, 159, 23);
+		btnNewButton.setBounds(887, 34, 159, 23);
 		panel_4.add(btnNewButton);
 		
 		btnNewButton_3 = new JButton("Activar Seguridad");
@@ -299,6 +300,16 @@ public class Principal extends JFrame {
 		clave = new JPasswordField();
 		clave.setBounds(1056, 11, 173, 20);
 		panel_4.add(clave);
+		
+		cliente_movimiento = new JComboBox();
+		cliente_movimiento.setModel(new DefaultComboBoxModel(new String[] {""}));
+		cliente_movimiento.setBounds(546, 35, 197, 20);
+		panel_4.add(cliente_movimiento);
+		
+		JLabel lblCliente_1 = new JLabel("Cliente");
+		lblCliente_1.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblCliente_1.setBounds(546, 12, 124, 25);
+		panel_4.add(lblCliente_1);
 		
 		JPanel panel_5 = new JPanel();
 		panel_5.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -846,6 +857,23 @@ public class Principal extends JFrame {
 		actualizarResumenGeneral();
 		iniciarFiados();
 		iniciarSeguridad();
+		iniciarClientesIngresos();
+	}
+	
+	public void iniciarClientesIngresos() {
+				
+		cliente_movimiento.removeAllItems();
+		
+		con.conectar();
+		ArrayList<Cliente> Clientes = con.getClientes();
+		con.cerrarConexion();
+		
+		cliente_movimiento.addItem(" ");
+		
+		for(int i = 0; i< Clientes.size();i++) {
+			cliente_movimiento.addItem(Clientes.get(i).getNombre());
+		}
+		
 	}
 	
 	public void iniciarSeguridad() {
@@ -959,6 +987,7 @@ public class Principal extends JFrame {
 	
 	public void ingresarFiado() {
 		String nombre_cliente = JOptionPane.showInputDialog("Ingrese el nombre del cliente");
+		String instituto = "";
 		nombre_cliente = nombre_cliente.toUpperCase();
 		
 		if(nombre_cliente.isEmpty()) {
@@ -975,6 +1004,14 @@ public class Principal extends JFrame {
 				c.setNombre(nombre_cliente);
 				c.setDeuda(0);
 				
+				String telefono = JOptionPane.showInputDialog("Ingrese el telefono del cliente");
+				
+				telefono = telefono.toUpperCase();
+				
+				String direccion = JOptionPane.showInputDialog("Ingrese la direccion del cliente");				
+				direccion = direccion.toUpperCase();
+				
+				
 				String input = JOptionPane.showInputDialog("Ingrese la deuda de este cliente");
 				
 				if(input.isEmpty()) {
@@ -984,7 +1021,9 @@ public class Principal extends JFrame {
 				if(Double.valueOf(input) <0) {
 					JOptionPane.showMessageDialog(null, "Ingrese un monto valido");
 				}else {
-					
+					c.setInstituto(instituto);
+					c.setTelefono(telefono);
+					c.setDireccion(direccion);
 					c.setDeuda(Double.valueOf(input));
 					con.conectar();
 					con.guardarCliente(c);
@@ -1010,6 +1049,9 @@ public class Principal extends JFrame {
 		con.cerrarConexion();
 		
 		modeloFiados.addColumn("Cliente");
+		modeloFiados.addColumn("Telefono");
+		modeloFiados.addColumn("Direccion");
+		modeloFiados.addColumn("Institucion");
 		modeloFiados.addColumn("Deuda");
 		
 		
@@ -1019,7 +1061,7 @@ public class Principal extends JFrame {
 			Cliente c = clientes.get(i);
 			totalDeuda=totalDeuda + c.getDeuda();
 			actualizarTotalFiado(totalDeuda);
-			modeloFiados.addRow(new Object[] {c.getNombre(),"$"+String.valueOf(c.getDeuda())});
+			modeloFiados.addRow(new Object[] {c.getNombre(),c.getTelefono(),c.getDireccion(),c.getInstituto(),"$"+String.valueOf(c.getDeuda())});
 			
 		}
 		

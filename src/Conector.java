@@ -191,15 +191,21 @@ public class Conector {
 		ResultSet result = null;		
         try {
         		
-            PreparedStatement st = conexion.prepareStatement("select * from fiados");
+            PreparedStatement st = conexion.prepareStatement("select * from fiados order by nombre ASC");
             result = st.executeQuery();
             
             while (result.next()) {
             	Cliente p = new Cliente();
             	
-                String nombre = result.getString("nombre");              
+                String nombre = result.getString("nombre");  
+                String telefono = result.getString("telefono");
+                String direccion = result.getString("direccion");
+                String instituto= result.getString("instituto");
                 double deuda= result.getDouble("deuda");
                 
+                p.setDireccion(direccion);
+                p.setInstituto(instituto);
+                p.setTelefono(telefono);                
                 p.setNombre(nombre);
                 p.setDeuda(deuda);
                 
@@ -234,11 +240,15 @@ public class Conector {
 	
 	public void guardarCliente(Cliente c) {
 		try {
-			PreparedStatement st = conexion.prepareStatement("insert into fiados(nombre,deuda) values (?,?)");
+			PreparedStatement st = conexion.prepareStatement("insert into fiados(nombre,deuda,telefono,direccion,instituto) values (?,?,?,?,?)");
 			
             
             st.setString(1,c.getNombre());
             st.setDouble(2,c.getDeuda());
+            st.setString(3,c.getTelefono());
+            st.setString(4,c.getDireccion());
+            st.setString(5,c.getInstituto());
+            
             
             st.execute();
             
